@@ -1,0 +1,22 @@
+{
+  "defaults.xlsx": {
+    "url": "https://www.bankofcanada.ca/wp-content/uploads/2026/10/BoC-BoE-Database-2026.xlsx",
+    "sha256": "701ccad33afd27292c418e6aa2c579f97db3016dee76da8c412966178fcb8449"
+  },
+  "etad.csv": {
+    "url": "https://yukiyanai.github.io/data_etad/ETAD_v_1_0_0.csv",
+    "sha256": "581b3c6fb7d9589652ce2b5e332ee42731600183f6d53fa97e14bc30ef9acbdc"
+  },
+  "restructurings.xlsx": {
+    "url": "https://docs.google.com/spreadsheets/d/16NPCuwXk7KzY1peEOHZkRKUETkPdYse2/export?format=xlsx",
+    "sha256": "e1dd3ced148e9365b22db2e3bf141b2de35aa39773a207581193d52486847e78"
+  },
+  "growth.json": {
+    "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.KD.ZG?source=2&date=1960:2022&format=json&per_page=30000",
+    "sha256": "db0eba882a9ab4c4ce5f1ac5102c9c01553634a0762cc6bc5f277b6481df9ebd"
+  },
+  "income.json": {
+    "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.KD?source=2&date=1960:2022&format=json&per_page=30000",
+    "sha256": "00107c1217f46b2819956454a3b89fe23512dd6c0578f36bae5cd3cc904f8ee3"
+  }
+}
