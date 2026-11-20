@@ -12,11 +12,19 @@ from urllib3.util.retry import Retry
 
 RAW = Path(__file__).resolve().parent / "raw"
 WDI = "https://api.worldbank.org/v2/country/all/indicator"
-INDICATORS = {"growth": "NY.GDP.MKTP.KD.ZG", "income": "NY.GDP.PCAP.KD"}
+INDICATORS = {
+    "growth": "NY.GDP.MKTP.KD.ZG",
+    "income": "NY.GDP.PCAP.KD",
+    "inflation": "FP.CPI.TOTL.ZG",
+    "current_account": "BN.CAB.XOKA.GD.ZS",
+}
 SOURCES = {
     "defaults.xlsx": "https://www.bankofcanada.ca/wp-content/uploads/2026/10/BoC-BoE-Database-2026.xlsx",
     "etad.csv": "https://yukiyanai.github.io/data_etad/ETAD_v_1_0_0.csv",
     "restructurings.xlsx": "https://docs.google.com/spreadsheets/d/16NPCuwXk7KzY1peEOHZkRKUETkPdYse2/export?format=xlsx",
+    "weo_oct2026.xlsx": ("https://data.imf.org/-/media/iData/External-Storage/Documents/"
+                         "0FA3DC49A04D446E9D69DBEB29979E1C/en/WEOOct2026all.xlsx"),
+    "rule_of_law.json": f"{WDI}/GOV_WGI_RL_SC?source=2&date=1996:2022&format=json&per_page=30000",
     **{f"{name}.json": f"{WDI}/{code}?source=2&date=1960:2022&format=json&per_page=30000"
        for name, code in INDICATORS.items()},
 }

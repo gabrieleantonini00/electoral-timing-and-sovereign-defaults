@@ -1,4 +1,33 @@
-term,within_vif
-term_due,1.0019123042593565
-lag_growth,1.0062368074031667
-lag_log_income,1.0051780579925556
+term,within_vif,model
+term_due,1.0019123042593565,Baseline
+lag_growth,1.0062368074031667,Baseline
+lag_log_income,1.0051780579925556,Baseline
+term_due,1.0081611063392992,"Macro, broad sample"
+lag_growth,1.0359327264236717,"Macro, broad sample"
+lag_log_income,1.817461363090875,"Macro, broad sample"
+lag_debt,1.729120983523197,"Macro, broad sample"
+lag_inflation,1.0696769482363522,"Macro, broad sample"
+lag_current_account,1.1160156081390753,"Macro, broad sample"
+term_due,1.010149319354549,"Baseline, common sample"
+lag_growth,1.012438200731586,"Baseline, common sample"
+lag_log_income,1.0094855762371333,"Baseline, common sample"
+term_due,1.01064331218389,"Macro, common sample"
+lag_growth,1.0375605582101717,"Macro, common sample"
+lag_log_income,1.7752540661028369,"Macro, common sample"
+lag_debt,1.726251355302858,"Macro, common sample"
+lag_inflation,1.0487694420345264,"Macro, common sample"
+lag_current_account,1.115190874052338,"Macro, common sample"
+term_due,1.0121989043456565,Macro and institutions
+lag_growth,1.0397097414822014,Macro and institutions
+lag_log_income,1.924771156796653,Macro and institutions
+lag_debt,1.7703121767862904,Macro and institutions
+lag_inflation,1.050726325033506,Macro and institutions
+lag_current_account,1.115785192491106,Macro and institutions
+lag_rule_of_law,1.092606026344838,Macro and institutions
+term_due,1.0104600302882933,"Macro and institutions, annual coverage"
+lag_growth,1.0490238870646937,"Macro and institutions, annual coverage"
+lag_log_income,2.0367600498251943,"Macro and institutions, annual coverage"
+lag_debt,1.967983497861328,"Macro and institutions, annual coverage"
+lag_inflation,1.0360883048077707,"Macro and institutions, annual coverage"
+lag_current_account,1.1087175996645866,"Macro and institutions, annual coverage"
+lag_rule_of_law,1.0830429392131375,"Macro and institutions, annual coverage"

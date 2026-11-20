@@ -4,6 +4,18 @@ Starting from my MSc thesis on the political determinants of sovereign default, 
 
 ## Findings
 
+The [executed Jupyter notebook](analysis/electoral_timing.ipynb) adds four lagged controls to the original growth and income specification: gross general government debt (% of GDP), annual CPI inflation (%), the current-account balance (% of GDP), and the WGI Rule of Law score (0–100). The current account measures external financing needs. Rule of Law captures perceptions of contract enforcement, property rights and respect for legal rules. The debt series comes from the October 2026 IMF WEO. The remaining controls come from the World Bank. [IMF WEO](https://data.imf.org/datasets/WEO) · [WGI series definition](https://databank.worldbank.org/metadataglossary/world-development-indicators/series/GOV_WGI_RL_SC)
+
+| Model on the same 747 country-years | Election-year difference, pp | Country-clustered 95% CI, pp | p-value |
+| --- | ---: | ---: | ---: |
+| Growth and income | −0.87 | [−7.42, 5.67] | 0.790 |
+| Add debt, inflation and current account | −0.83 | [−7.32, 5.67] | 0.800 |
+| Add rule of law | −1.10 | [−7.60, 5.41] | 0.737 |
+
+The extended model covers 56 countries and 89 onsets in 24 observed years between 1997 and 2023. The largest VIF after removing country and year effects is 1.92 (log real income per capita). Years with missing controls are excluded. Because early governance scores have gaps, the notebook also compares clustered and Driscoll–Kraay inference on the consecutive 2003–2023 period. [Complete estimates](results/estimates.csv) · [VIF by specification](results/vif.csv)
+
+### Original baseline and robustness checks
+
 In 1,693 country-years at risk across 96 countries between 1962 and 2023, there were 209 new default episodes. The estimated change in annual default probability in the expected final year of a legislative term is **−0.50 percentage points**. The country-clustered 95% confidence interval runs from **−5.07 to +4.07 points**. The data are compatible with meaningful shifts in either direction.
 
 | Measure of electoral timing | Outcome | Country-years | Difference in probability, pp | 95% CI, pp |
@@ -37,11 +49,17 @@ From the repository root, use Python 3.13 in a virtual environment and run:
 
 ```sh
 python -m pip install -r requirements.txt
+python -m jupyterlab analysis/electoral_timing.ipynb
+```
+
+In JupyterLab, select the project environment and run all cells. For the command-line replication and CSV exports:
+
+```sh
 python data/download.py
 python data/build_panel.py
 python analysis/estimate.py
 ```
 
-[The downloader](data/download.py) retrieves all five public inputs without API keys and caches them in `data/raw/`. Use `--refresh` to replace cached copies. [The panel builder](data/build_panel.py) writes country-year observations and the dated-event comparison to `data/processed/`. Aggregate estimates and diagnostics are in [results/](results/). The [source manifest](results/sources.json) records the URLs and SHA-256 hashes for the published run. The World Bank can revise its historical series.
+[The downloader](data/download.py) retrieves the public inputs without API keys and caches them in `data/raw/`. Use `--refresh` to replace cached copies. [The panel builder](data/build_panel.py) writes country-year observations and the dated-event comparison to `data/processed/`. Aggregate estimates and diagnostics are in [results/](results/). The [source manifest](results/sources.json) records the URLs and SHA-256 hashes for the published run. The World Bank can revise its historical series.
 
 The [archived Stata scripts](thesis/) require the thesis-era input dataset, which was not part of the original repository. The Python analysis builds its own panel from the sources above.

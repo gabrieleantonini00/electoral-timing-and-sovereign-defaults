@@ -11,6 +11,14 @@
     "url": "https://docs.google.com/spreadsheets/d/16NPCuwXk7KzY1peEOHZkRKUETkPdYse2/export?format=xlsx",
     "sha256": "e1dd3ced148e9365b22db2e3bf141b2de35aa39773a207581193d52486847e78"
   },
+  "weo_oct2026.xlsx": {
+    "url": "https://data.imf.org/-/media/iData/External-Storage/Documents/0FA3DC49A04D446E9D69DBEB29979E1C/en/WEOOct2026all.xlsx",
+    "sha256": "2aa4f70a05931197b41ed7e0202dc56eee8d816858ac14521e4f8f5dbc38696c"
+  },
+  "rule_of_law.json": {
+    "url": "https://api.worldbank.org/v2/country/all/indicator/GOV_WGI_RL_SC?source=2&date=1996:2022&format=json&per_page=30000",
+    "sha256": "35d02f5bda5e21e6f2068ca9a8a042ff9784fb21d8bb18779fc1ed17b1a9a232"
+  },
   "growth.json": {
     "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.KD.ZG?source=2&date=1960:2022&format=json&per_page=30000",
     "sha256": "db0eba882a9ab4c4ce5f1ac5102c9c01553634a0762cc6bc5f277b6481df9ebd"
@@ -18,5 +26,13 @@
   "income.json": {
     "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.KD?source=2&date=1960:2022&format=json&per_page=30000",
     "sha256": "00107c1217f46b2819956454a3b89fe23512dd6c0578f36bae5cd3cc904f8ee3"
+  },
+  "inflation.json": {
+    "url": "https://api.worldbank.org/v2/country/all/indicator/FP.CPI.TOTL.ZG?source=2&date=1960:2022&format=json&per_page=30000",
+    "sha256": "470c62f4a30d7f05150daf919a3d883ca22757821f7bee39326e6db742c3f218"
+  },
+  "current_account.json": {
+    "url": "https://api.worldbank.org/v2/country/all/indicator/BN.CAB.XOKA.GD.ZS?source=2&date=1960:2022&format=json&per_page=30000",
+    "sha256": "e27cadc7acee2ced1f51194961fccd6653f4faf05a3121b7741ca6d38a6d0785"
   }
 }

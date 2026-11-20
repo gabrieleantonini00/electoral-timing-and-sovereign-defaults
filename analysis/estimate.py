@@ -12,6 +12,8 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "results"
 CONTROLS = ["lag_growth", "lag_log_income"]
+MACRO_CONTROLS = [*CONTROLS, "lag_debt", "lag_inflation", "lag_current_account"]
+EXTENDED_CONTROLS = [*MACRO_CONTROLS, "lag_rule_of_law"]
 
 
 def estimation_sample(frame, regressors, outcome="onset"):
@@ -55,6 +57,31 @@ def fit(name, sample, regressors, hac=False, outcome="onset"):
     return estimates
 
 
+def within_vif(sample, terms):
+    """Measure collinearity among slopes after absorbing country and year effects."""
+    within = np.column_stack([smf.ols(f"{term} ~ C(iso3) + C(year)", data=sample).fit().resid
+                              for term in terms])
+    return pd.DataFrame({"term": terms, "within_vif": [
+        variance_inflation_factor(within, i) for i in range(len(terms))]})
+
+
+def extended_specifications(risk):
+    basic = ["term_due", *CONTROLS]
+    macro = ["term_due", *MACRO_CONTROLS]
+    full = ["term_due", *EXTENDED_CONTROLS]
+    common = estimation_sample(risk, full)
+    # WGI reporting has gaps before 2002. Annual HAC uses the contiguous period.
+    annual = estimation_sample(common.loc[common.year >= 2003], full)
+    return [
+        ("Baseline", estimation_sample(risk, basic), basic, False),
+        ("Macro, broad sample", estimation_sample(risk, macro), macro, False),
+        ("Baseline, common sample", common, basic, False),
+        ("Macro, common sample", common, macro, False),
+        ("Macro and institutions", common, full, False),
+        ("Macro and institutions, annual coverage", annual, full, True),
+    ]
+
+
 def main():
     OUT.mkdir(exist_ok=True)
     panel = pd.read_csv(ROOT / "data/processed/panel.csv")
@@ -76,13 +103,13 @@ def main():
         *fit("Fixed legislative terms", fixed, base_terms),
         *fit("Dated payment defaults", market, base_terms, outcome="dated_payment_default"),
     ]
+    specs = extended_specifications(risk)
+    for label, rows, terms, hac in specs[1:]:
+        estimates.extend(fit(label, rows, terms, hac=hac))
     pd.DataFrame(estimates).to_csv(OUT / "estimates.csv", index=False)
 
-    # Project each slope regressor on the same dummies used in the baseline.
-    within = np.column_stack([smf.ols(f"{term} ~ C(iso3) + C(year)", data=sample).fit().resid
-                              for term in base_terms])
-    vif = [variance_inflation_factor(within, i) for i in range(len(base_terms))]
-    pd.DataFrame({"term": base_terms, "within_vif": vif}).to_csv(OUT / "vif.csv", index=False)
+    pd.concat([within_vif(rows, terms).assign(model=label) for label, rows, terms, _ in specs],
+              ignore_index=True).to_csv(OUT / "vif.csv", index=False)
     sample.groupby("term_due").agg(country_years=("onset", "size"), onsets=("onset", "sum"),
                                    onset_share=("onset", "mean"), vote_share=("vote_held", "mean")
                                    ).to_csv(OUT / "descriptives.csv")

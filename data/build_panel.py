@@ -88,6 +88,26 @@ def lagged_indicator(name):
     return pd.DataFrame(values, columns=KEY + [f"lag_{name}"])
 
 
+def lagged_debt():
+    """Read gross general government debt as a percentage of GDP."""
+    book = load_workbook(RAW / "weo_oct2026.xlsx", read_only=True, data_only=True)
+    try:
+        rows = iter(book["Countries"].values)
+        header = next(rows)
+        country = header.index("COUNTRY.ID")
+        indicator = header.index("INDICATOR.ID")
+        periods = [(i, y) for i, y in enumerate(header) if isinstance(y, int) and 1980 <= y <= 2022]
+        records = [(row[country], year + 1, row[i]) for row in rows
+                   if row[indicator] == "GGXWDG_NGDP" for i, year in periods]
+    finally:
+        book.close()
+    if not records:
+        raise ValueError("No annual gross debt observations found in the WEO workbook")
+    debt = pd.DataFrame(records, columns=KEY + ["lag_debt"])
+    debt["lag_debt"] = pd.to_numeric(debt.lag_debt.replace({"no data": None}), errors="raise")
+    return debt
+
+
 def dated_defaults():
     """Identify dated missed payments in the completed and ongoing case lists."""
     book = load_workbook(RAW / "restructurings.xlsx", read_only=True, data_only=True)
@@ -110,8 +130,9 @@ def main():
     PROCESSED.mkdir(exist_ok=True)
     defaults = read_defaults()
     panel = defaults.merge(legislative_calendar(), on=KEY, validate="one_to_one")
-    for name in ("income", "growth"):
+    for name in ("income", "growth", "inflation", "current_account", "rule_of_law"):
         panel = panel.merge(lagged_indicator(name), on=KEY, how="left", validate="one_to_one")
+    panel = panel.merge(lagged_debt(), on=KEY, how="left", validate="one_to_one")
     panel["lag_log_income"] = np.log(panel.lag_income.where(panel.lag_income > 0))
     events = dated_defaults()
     panel = panel.merge(events.assign(dated_payment_default=1), on=KEY, how="left",
